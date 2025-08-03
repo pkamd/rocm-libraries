@@ -3001,6 +3001,9 @@ namespace TensileLite
         const bool streamKDP = Debug::Instance().useStreamKDataParrallel();
         if(streamKDP)
             return tiles;
+        
+        std::cout << "Setting SK Grid: " << static_cast<size_t>(problem.getParams().skgrid()) << std::endl;
+        return static_cast<size_t>(problem.getParams().skgrid());
 
         // If K==0, run kernel as DP with Alpha=0 to skip main loop and apply beta*c
         size_t z = 1;

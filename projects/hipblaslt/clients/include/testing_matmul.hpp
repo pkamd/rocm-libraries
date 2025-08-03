@@ -2455,6 +2455,7 @@ void testing_matmul_with_bias(const Arguments& arg,
     // Remove duplicate
     std::vector<uint32_t> gsu_vector;
     std::vector<uint32_t> wgm_vector;
+    std::vector<uint8_t>  skgrid_vector;
     for(int32_t i = 0; i < MAX_SUPPORTED_NUM_PROBLEMS; i++)
     {
         if(arg.gsu_vector[i] == -1)
@@ -2467,21 +2468,31 @@ void testing_matmul_with_bias(const Arguments& arg,
             break;
         wgm_vector.push_back(arg.wgm_vector[i]);
     }
+    for(int32_t i = 0; i < MAX_SUPPORTED_NUM_PROBLEMS; i++)
+    {
+        if(arg.skgrid_vector[i] == -1)
+            break;
+        skgrid_vector.push_back(arg.skgrid_vector[i]);
+    }
     std::set<uint32_t> remove_duplicate(gsu_vector.begin(), gsu_vector.end());
     gsu_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
     remove_duplicate = std::set<uint32_t>(wgm_vector.begin(), wgm_vector.end());
-    wgm_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
+    wgm_vector.assign(remove_duplicate.begin(), remove_duplicate.end());    
+    std::set<uint32_t> remove_duplicate_skg(skgrid_vector.begin(), skgrid_vector.end());
+    skgrid_vector.assign(remove_duplicate_skg.begin(), remove_duplicate_skg.end());
     std::vector<hipblaslt_ext::GemmTuning> tuningVec;
     if(arg.use_ext)
     {
         for(size_t wgm = 0; wgm < wgm_vector.size(); wgm++)
             for(size_t gsu = 0; gsu < gsu_vector.size(); gsu++)
-            {
-                hipblaslt_ext::GemmTuning tuning;
-                tuning.setSplitK(gsu_vector[gsu]);
-                tuning.setWgm(wgm_vector[wgm]);
-                tuningVec.push_back(tuning);
-            }
+                for(size_t skgrid = 0; skgrid < skgrid_vector.size(); skgrid++)
+                {
+                    hipblaslt_ext::GemmTuning tuning;
+                    tuning.setSplitK(gsu_vector[gsu]);
+                    tuning.setWgm(wgm_vector[wgm]);
+                    tuning.setSKGrid(skgrid_vector[skgrid]);
+                    tuningVec.push_back(tuning);
+                }
     }
     else
     {
@@ -3989,6 +4000,7 @@ void testing_matmul_with_bias(const Arguments& arg,
                     arg,
                     (uint32_t)tuningVec[heuristicTuningIndex[sol]].getSplitK(),
                     (uint32_t)tuningVec[heuristicTuningIndex[sol]].getWgm(),
+                    (uint32_t)tuningVec[heuristicTuningIndex[sol]].getSKGrid(),
                     gpu_time_used,
                     flush_time_used,
                     flops,
@@ -4047,6 +4059,7 @@ void testing_matmul_with_bias(const Arguments& arg,
                 arg,
                 (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getSplitK(),
                 (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getWgm(),
+                (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getSKGrid(),
                 best_gpu_time,
                 flush_time_used,
                 best_flops,
