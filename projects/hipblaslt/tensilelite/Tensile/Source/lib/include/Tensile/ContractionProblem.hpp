@@ -168,7 +168,7 @@ namespace TensileLite
         int16_t          m_gsu            = 0; // default value
         bool             m_gsuc           = false; // default value
         bool             m_gsuwgmrr       = false; // default value
-        uint8_t          m_skgrid         = 3; // default value
+        uint8_t          m_skgrid         = 1; // default value
         int16_t          m_wgm            = 0; // default value
         uint16_t         m_wgmxcc         = 0; // default value
         int16_t          m_wgmxccg        = 0; // default value

@@ -307,8 +307,8 @@ try
     std::vector<int64_t>  m, n, k;
     std::vector<int64_t>  lda, ldb, ldc, ldd, lde;
     std::vector<int64_t>  stride_a, stride_b, stride_c, stride_d, stride_e;
-    std::vector<uint32_t> gsu_vector, wgm_vector;
-    std::vector<uint8_t>  skgrid_vector;
+    std::vector<uint32_t> gsu_vector, wgm_vector, skgrid_vector;
+    
     arg.init(); // set all defaults
     const char* tuningEnv          = getenv("HIPBLASLT_TUNING_FILE");
     const char* tuningMaxWorkSpace = getenv("HIPBLASLT_TUNING_USER_MAX_WORKSPACE");
@@ -621,7 +621,7 @@ try
          "[Tuning parameter] Set workgroup mapping for a solution, 0 is use solution's default value. (Only support GEMM + api_method mix or cpp)")
         
         ("skgrid",
-         valueVec<uint8_t>(&skgrid_vector),
+         valueVec<uint32_t>(&skgrid_vector),
          "[Tuning parameter] Set stream-K grid for a solution, 3 is use solution's default value. Given preference over environment flag (Only support GEMM + api_method mix or cpp)")
 
         ("flush",
@@ -719,7 +719,6 @@ try
     }
     for(size_t i = 0; i < wgm_vector.size(); i++)
     {
-        hipblaslt_cout << "wgm: " << wgm_vector[i] << ", ";
         if(wgm_vector[i] < 0 || wgm_vector[i] > 255)
         {
             hipblaslt_cerr << "Workgroup mapping range is 0~255." << std::endl;
@@ -728,14 +727,13 @@ try
         arg.wgm_vector[i] = wgm_vector[i];
         max_wgm           = max(max_wgm, arg.wgm_vector[i]);
     }
-    hipblaslt_cout << std::endl;
     if((max_wgm > 0) && (api_method == 0))
     {
         hipblaslt_cerr << "Currently workgroup mapping only supports api_method mix or cpp."
                        << std::endl;
         return 1;
     }
-    int max_skg = 0;
+    int max_skgrid = 0;
     if(skgrid_vector.size() > MAX_SUPPORTED_NUM_PROBLEMS)
     {
         hipblaslt_cerr << "Too many sk grid parameters, maximum is: " << MAX_SUPPORTED_NUM_PROBLEMS
@@ -750,10 +748,11 @@ try
             hipblaslt_cerr << "streamk grid range is 0~255." << std::endl;
             return 1;
         }
+        hipblaslt_cout << "skgrid: " << skgrid_vector[i] << std::endl;
         arg.skgrid_vector[i] = skgrid_vector[i];
-        max_skg           = max(max_skg, arg.skgrid_vector[i]);
+        max_skgrid           = max(max_skgrid, arg.skgrid_vector[i]);
     }
-    if((max_skg > 0) && (api_method == 0))
+    if((max_skgrid > 0) && (api_method == 0))
     {
         hipblaslt_cerr << "Currently streamk gird only supports api_method mix or cpp."
                        << std::endl;

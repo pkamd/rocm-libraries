@@ -2478,7 +2478,7 @@ void testing_matmul_with_bias(const Arguments& arg,
     gsu_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
     remove_duplicate = std::set<uint32_t>(wgm_vector.begin(), wgm_vector.end());
     wgm_vector.assign(remove_duplicate.begin(), remove_duplicate.end());    
-    std::set<uint32_t> remove_duplicate_skg(skgrid_vector.begin(), skgrid_vector.end());
+    std::set<uint8_t> remove_duplicate_skg(skgrid_vector.begin(), skgrid_vector.end());
     skgrid_vector.assign(remove_duplicate_skg.begin(), remove_duplicate_skg.end());
     std::vector<hipblaslt_ext::GemmTuning> tuningVec;
     if(arg.use_ext)
