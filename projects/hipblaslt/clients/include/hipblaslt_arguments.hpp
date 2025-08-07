@@ -277,7 +277,7 @@ struct Arguments
     OPER(skip_slow_solution_ratio) SEP\
     OPER(gsu_vector) SEP             \
     OPER(wgm_vector) SEP             \
-    OPER(skgrid_vector) SEP             \
+    OPER(skgrid_vector) SEP          \
     OPER(print_solution_found) SEP   \
     OPER(print_kernel_info) SEP      \
     OPER(flush) SEP                  \
