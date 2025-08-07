@@ -3004,7 +3004,6 @@ namespace TensileLite
         
         if(problem.getParams().skgrid()){
             // sk grid set via hipblaslt-bench given precedence over ENV FLAG.
-            std::cout << "Setting SK Grid: " << static_cast<size_t>(problem.getParams().skgrid()) << std::endl;
             return static_cast<size_t>(problem.getParams().skgrid());
         }
 
