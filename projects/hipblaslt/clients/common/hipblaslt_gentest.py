@@ -388,6 +388,13 @@ def instantiate(test):
       wgm_vector[0] = 0
     test['wgm_vector'] = wgm_vector
 
+    skgrid_vector = [-1 for _ in range(32)]
+    if 'skgrid_vector' in test:
+      skgrid_vector[0] = test['skgrid_vector']
+    else:
+      skgrid_vector[0] = 0
+    test['skgrid_vector'] = skgrid_vector
+
 
     # Any Arguments fields declared as enums (a_type, b_type, etc.)
     enum_args = [decl[0] for decl in param['Arguments']._fields_
