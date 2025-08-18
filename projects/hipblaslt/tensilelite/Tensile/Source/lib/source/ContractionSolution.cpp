@@ -3021,6 +3021,12 @@ namespace TensileLite
         const bool streamKDP = Debug::Instance().useStreamKDataParrallel();
         if(streamKDP)
             return tiles;
+        
+        if(problem.getParams().skgrid()){
+            // sk grid set via hipblaslt-bench given precedence over ENV FLAG.
+            std::cout << "Setting sk grid at getskgrid" << problem.getParams().skgrid() << std::endl;
+            return static_cast<size_t>(problem.getParams().skgrid());
+        }
 
         // If K==0, run kernel as DP with Alpha=0 to skip main loop and apply beta*c
         size_t z = 1;
