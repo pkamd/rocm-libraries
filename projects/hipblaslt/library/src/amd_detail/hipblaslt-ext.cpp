@@ -412,7 +412,7 @@ namespace hipblaslt_ext
     public:
         uint16_t splitK = 0;
         int16_t  wgm    = 0;
-        uint8_t  skgrid = 0;
+        uint64_t  skgrid = 0;
     };
 
     GemmTuning::GemmTuning()
