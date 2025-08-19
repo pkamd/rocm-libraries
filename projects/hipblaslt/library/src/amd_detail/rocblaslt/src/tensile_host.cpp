@@ -3906,7 +3906,7 @@ std::string getKernelNameFromData(rocblaslt_handle             handle,
 
     int                                        gsu = 0;
     int                                        wgm = 0;
-    uint64_t                                   skgrid = 0;
+    int                                     skgrid = 0;
     std::vector<TensileLite::KernelInvocation> kernels;
 
     if(gemmType == rocblaslt::RocGemmType::ROCBLASLT_GEMM)
@@ -3953,7 +3953,7 @@ std::string getSolutionNameFromData(rocblaslt_handle             handle,
 
     int gsu           = 0;
     int wgm           = 0;
-    uint64_t skgrid   = 0;
+    int skgrid   = 0;
     int solutionIndex = -1;
 
     std::shared_ptr<TensileLite::Hardware> hardware;

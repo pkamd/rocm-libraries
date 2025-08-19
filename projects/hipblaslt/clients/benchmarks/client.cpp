@@ -307,8 +307,7 @@ try
     std::vector<int64_t>  m, n, k;
     std::vector<int64_t>  lda, ldb, ldc, ldd, lde;
     std::vector<int64_t>  stride_a, stride_b, stride_c, stride_d, stride_e;
-    std::vector<uint32_t> gsu_vector, wgm_vector;
-    std::vector<uint64_t> skgrid_vector;
+    std::vector<uint32_t> gsu_vector, wgm_vector, skgrid_vector;
     
     arg.init(); // set all defaults
     const char* tuningEnv          = getenv("HIPBLASLT_TUNING_FILE");
@@ -622,7 +621,7 @@ try
          "[Tuning parameter] Set workgroup mapping for a solution, 0 is use solution's default value. (Only support GEMM + api_method mix or cpp)")
         
         ("skgrid",
-         valueVec<uint64_t>(&skgrid_vector),
+         valueVec<uint32_t>(&skgrid_vector),
          "[Tuning parameter] Set stream-K grid for a solution. Given preference over env flag. If not specified use the default workflow.(Only support GEMM + api_method mix or cpp)")
 
         ("flush",
@@ -743,10 +742,9 @@ try
     }
     for(size_t i = 0; i < skgrid_vector.size(); i++)
     {
-        if(skgrid_vector[i] < 0 || skgrid_vector[i] > std::numeric_limits<size_t>::max())
-        // TODO - What is the valid range of skgrid
+        if(skgrid_vector[i] < 0 || skgrid_vector[i] > 65535)
         {
-            hipblaslt_cerr << "stream-k grid is uint64_t datatype" << std::endl;
+            hipblaslt_cerr << "stream-k grid is 16-bit unsigned type" << std::endl;
             return 1;
         }
         arg.skgrid_vector[i] = skgrid_vector[i];

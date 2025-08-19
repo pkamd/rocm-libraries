@@ -169,7 +169,7 @@ public:
                   const Arguments&            arg,
                   uint32_t                    splitK,
                   uint32_t                    wgm,
-                  uint64_t                    skgrid,
+                  uint32_t                    skgrid,
                   double                      gpu_us,
                   double                      flush_us,
                   double                      gflops,

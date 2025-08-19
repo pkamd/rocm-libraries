@@ -174,7 +174,7 @@ struct Arguments
     // tuning
     int32_t gsu_vector[MAX_SUPPORTED_NUM_PROBLEMS]; // This is for client
     int32_t wgm_vector[MAX_SUPPORTED_NUM_PROBLEMS]; // This is for client
-    uint64_t skgrid_vector[MAX_SUPPORTED_NUM_PROBLEMS]; // This is for client
+    int32_t skgrid_vector[MAX_SUPPORTED_NUM_PROBLEMS]; // This is for client
 
     // print
     bool print_solution_found;

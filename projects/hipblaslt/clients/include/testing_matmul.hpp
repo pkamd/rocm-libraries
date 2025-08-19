@@ -2467,7 +2467,7 @@ void testing_matmul_with_bias(const Arguments& arg,
     // Remove duplicate
     std::vector<uint32_t> gsu_vector;
     std::vector<uint32_t> wgm_vector;
-    std::vector<uint64_t> skgrid_vector;
+    std::vector<uint32_t> skgrid_vector;
     for(int32_t i = 0; i < MAX_SUPPORTED_NUM_PROBLEMS; i++)
     {
         if(arg.gsu_vector[i] == -1)
@@ -2482,18 +2482,17 @@ void testing_matmul_with_bias(const Arguments& arg,
     }
     for(int32_t i = 0; i < MAX_SUPPORTED_NUM_PROBLEMS; i++)
     {
-        if(arg.skgrid_vector[i] == 0)
+        if(arg.skgrid_vector[i] == -1)
             break;
         skgrid_vector.push_back(arg.skgrid_vector[i]);
     }
-    if(skgrid_vector.size() == 0) skgrid_vector.push_back(0);
 
     std::set<uint32_t> remove_duplicate(gsu_vector.begin(), gsu_vector.end());
     gsu_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
     remove_duplicate = std::set<uint32_t>(wgm_vector.begin(), wgm_vector.end());
-    wgm_vector.assign(remove_duplicate.begin(), remove_duplicate.end());    
-    std::set<uint64_t> remove_duplicate_skg(skgrid_vector.begin(), skgrid_vector.end());
-    skgrid_vector.assign(remove_duplicate_skg.begin(), remove_duplicate_skg.end());
+    wgm_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
+    remove_duplicate = std::set<uint32_t>(skgrid_vector.begin(), skgrid_vector.end());
+    skgrid_vector.assign(remove_duplicate.begin(), remove_duplicate.end());    
     std::vector<hipblaslt_ext::GemmTuning> tuningVec;
     if(arg.use_ext)
     {
@@ -3987,7 +3986,7 @@ void testing_matmul_with_bias(const Arguments& arg,
                     arg,
                     (uint32_t)tuningVec[heuristicTuningIndex[sol]].getSplitK(),
                     (uint32_t)tuningVec[heuristicTuningIndex[sol]].getWgm(),
-                    (uint64_t)tuningVec[heuristicTuningIndex[sol]].getSKGrid(),
+                    (uint32_t)tuningVec[heuristicTuningIndex[sol]].getSKGrid(),
                     gpu_time_used,
                     flush_time_used,
                     flops,
@@ -4046,7 +4045,7 @@ void testing_matmul_with_bias(const Arguments& arg,
                 arg,
                 (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getSplitK(),
                 (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getWgm(),
-                (uint64_t)tuningVec[heuristicTuningIndex[best_sol]].getSKGrid(),
+                (uint32_t)tuningVec[heuristicTuningIndex[best_sol]].getSKGrid(),
                 best_gpu_time,
                 flush_time_used,
                 best_flops,

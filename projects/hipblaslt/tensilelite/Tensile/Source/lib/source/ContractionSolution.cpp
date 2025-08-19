@@ -3022,9 +3022,8 @@ namespace TensileLite
         if(streamKDP)
             return tiles;
         
-        if(problem.getParams().skgrid()){
+        if(problem.getParams().skgrid() > 0){
             // sk grid set via hipblaslt-bench given precedence over ENV FLAG.
-            std::cout << "Setting sk grid at getskgrid" << problem.getParams().skgrid() << std::endl;
             return static_cast<size_t>(problem.getParams().skgrid());
         }
 
