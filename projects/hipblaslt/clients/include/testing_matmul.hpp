@@ -2486,6 +2486,8 @@ void testing_matmul_with_bias(const Arguments& arg,
             break;
         skgrid_vector.push_back(arg.skgrid_vector[i]);
     }
+    if(skgrid_vector.size() == 0) skgrid_vector.push_back(0);
+
     std::set<uint32_t> remove_duplicate(gsu_vector.begin(), gsu_vector.end());
     gsu_vector.assign(remove_duplicate.begin(), remove_duplicate.end());
     remove_duplicate = std::set<uint32_t>(wgm_vector.begin(), wgm_vector.end());

@@ -388,7 +388,7 @@ def instantiate(test):
       wgm_vector[0] = 0
     test['wgm_vector'] = wgm_vector
 
-    skgrid_vector = [-1 for _ in range(32)]
+    skgrid_vector = [0 for _ in range(32)]
     if 'skgrid_vector' in test:
       skgrid_vector[0] = test['skgrid_vector']
     else:
